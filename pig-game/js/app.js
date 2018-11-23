@@ -6,3 +6,21 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 */
+const gameItems = {
+  scores: [0, 0],
+  roundScore: 0,
+  activePlayers: 0,
+  dice: Math.floor(Math.random() * 6) + 1,
+};
+
+const rollDice = () => {
+  let random = Math.floor(Math.random() * 6) + 1;
+  document.querySelector(
+    '#current-' + gameItems.activePlayers,
+  ).textContent = random;
+};
+
+const diceRoll = document.querySelector('.dice');
+diceRoll.style.display = 'none';
+const rollButton = document.querySelector('.btn-roll');
+rollButton.addEventListener('click', rollDice);
