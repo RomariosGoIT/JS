@@ -44,7 +44,8 @@ function newGameBtnHandler() {
 };
 
 function winnerHandler() {
-  document.querySelector('.player-' + gameItems.activePlayer + '-panel').classList.add('winner', 'player-name');
+  document.querySelector('.player-' + gameItems.activePlayer + '-panel').classList.add('winner');
+  document.querySelector('.player-' + gameItems.activePlayer + '-panel').classList.remove('active');
   document.getElementById('name-' + gameItems.activePlayer).textContent = 'Winner!';
   diceRoll.style.display = 'none';
   rollButton.disabled  = true;
@@ -77,8 +78,8 @@ function startNewGame() {
   diceRoll.style.display = 'none';
   document.querySelector('.player-0-panel').classList.add('active');
   document.querySelector('.player-1-panel').classList.remove('active');
-  document.querySelector('.player-0-panel').classList.remove('winner', 'player-name');
-  document.querySelector('.player-1-panel').classList.remove('winner', 'player-name');
+  document.querySelector('.player-0-panel').classList.remove('winner');
+  document.querySelector('.player-1-panel').classList.remove('winner');
   document.getElementById('name-0').textContent = 'Player 1';  
   document.getElementById('name-1').textContent = 'Player 2';  
   rollButton.disabled = false;
