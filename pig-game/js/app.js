@@ -20,6 +20,10 @@ const newGameButton = document.querySelector('.btn-new');
 
 startNewGame();
 
+rollButton.addEventListener('click', rollBtnHandler);
+holdButton.addEventListener('click', holdBtnHandler);
+newGameButton.addEventListener('click', newGameBtnHandler);
+
 function rollBtnHandler() {
   let random = Math.floor(Math.random() * 6) + 1;
   diceRoll.style.display = 'block';
@@ -61,10 +65,6 @@ function winnerHandler() {
   rollButton.disabled = true;
   holdButton.disabled = true;
 }
-
-rollButton.addEventListener('click', rollBtnHandler);
-holdButton.addEventListener('click', holdBtnHandler);
-newGameButton.addEventListener('click', newGameBtnHandler);
 
 function nextPlayer() {
   document.getElementById('current-' + gameItems.activePlayer).textContent = 0;
