@@ -324,7 +324,7 @@ i {
     font-size: 35px;
 }
 
-.final-score .not-set {
+.final-score.not-set {
     font-size: 15px;
     color: red;
     font-weight: 600;
