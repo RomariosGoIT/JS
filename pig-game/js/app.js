@@ -13,25 +13,51 @@ const gameItems = {
   activePlayer: 0,
   gamePlaying: true,
   diceRoll: 0,
+  finalScore: {
+    isActive: false,
+    value: null,
+  },
 };
 
 const diceRoll = document.querySelector('.dice');
 const rollButton = document.querySelector('.btn-roll');
 const holdButton = document.querySelector('.btn-hold');
 const newGameButton = document.querySelector('.btn-new');
+const inpButton = document.querySelector('.inp-score');
+const inp = document.getElementById('inp');
+const finalScore = document.querySelector('.final-score');
 
-startNewGame();
+newGameStart();
 
 rollButton.addEventListener('click', rollBtnHandler);
 holdButton.addEventListener('click', holdBtnHandler);
 newGameButton.addEventListener('click', newGameBtnHandler);
+inpButton.addEventListener('submit', setFinalScoreHanler);
+
+function setFinalScoreHanler(evt) {
+  evt.preventDefault();
+  if (!gameItems.finalScore.isActive) {
+    if (!isNaN(inp.value)) {
+      gameItems.finalScore.value = inp.value;
+      finalScore.textContent = gameItems.finalScore.value;
+      inp.value = null;
+      gameItems.finalScore.isActive = true;
+      inp.disabled = true;
+      inpButton.classList.remove('error');
+    } else {
+      inpButton.classList.add('error');
+    }
+  }
+}
 
 function rollBtnHandler() {
-  if (gameItems.gamePlaying) {
+  if (gameItems.gamePlaying && gameItems.finalScore.value !== null) {
     let random = Math.floor(Math.random() * 6) + 1;
     diceRoll.style.display = 'block';
     diceRoll.src = './img/dice-' + random + '.png';
     random === 6 ? (gameItems.diceRoll += 6) : null;
+    gameItems.finalScore.isActive = true;
+    inp.disabled = true;
     if (random !== 1 && gameItems.diceRoll !== 12) {
       gameItems.roundScore += random;
       document.getElementById('current-' + gameItems.activePlayer).textContent =
@@ -43,20 +69,20 @@ function rollBtnHandler() {
 }
 
 function holdBtnHandler() {
-  if (gameItems.gamePlaying) {
+  if (gameItems.gamePlaying && gameItems.finalScore.value !== null) {
     let playerScore = (gameItems.scores[gameItems.activePlayer] +=
       gameItems.roundScore);
     document.getElementById(
       'score-' + gameItems.activePlayer,
     ).textContent = playerScore;
-    gameItems.scores[gameItems.activePlayer] >= 100
+    gameItems.scores[gameItems.activePlayer] >= gameItems.finalScore.value
       ? winnerHandler()
       : nextPlayer();
   }
 }
 
 function newGameBtnHandler() {
-  startNewGame();
+  newGameStart();
 }
 
 function winnerHandler() {
@@ -84,7 +110,8 @@ function nextPlayer() {
   document.querySelector('.player-1-panel').classList.toggle('active');
 }
 
-function startNewGame() {
+function newGameStart() {
+  finalScore.textContent = gameItems.finalScore.value;
   document.getElementById('score-0').textContent = '0';
   document.getElementById('score-1').textContent = '0';
   document.getElementById('current-0').textContent = '0';
@@ -101,4 +128,6 @@ function startNewGame() {
   document.getElementById('name-0').textContent = 'Player 1';
   document.getElementById('name-1').textContent = 'Player 2';
   gameItems.gamePlaying = true;
+  gameItems.finalScore.isActive = false;
+  inp.disabled = false;
 }

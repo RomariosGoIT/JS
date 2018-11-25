@@ -43,12 +43,18 @@
 
         <img src="./img/dice-5.png" alt="Dice" class="dice" />
 
-        <div class="inp-score">
+        <form class="inp-score input-group">
             <label for="inp" class="inp">
-                <input type="text" id="inp" placeholder="&nbsp;">
-                <span class="label">Final score: </span>
+                <input type="text" id="inp" placeholder="&nbsp" ; maxlength="3">
+                <span class="label">Set final score: </span>
                 <span class="border"></span>
+                <div class="error-message">Number only</div>
             </label>
+            <button class="btn-int">Set</button>
+        </form>
+        <div class="final-score-output">
+            <p>final score</p>
+            <p class="final-score">100</p>
         </div>
     </div>
 

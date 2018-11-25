@@ -191,7 +191,7 @@ i {
     position: relative;
     margin: auto;
     width: 100%;
-    max-width: 80px;
+    max-width: 100px;
 }
 
 .inp .label {
@@ -256,4 +256,61 @@ i {
 
 .inp input:focus+span+.border {
     transform: scaleX(1);
+}
+
+.btn-int {
+    left: 150%;
+    top: 14px;
+    width: 80%;
+}
+
+/* ERROR */
+
+
+.error-message {
+    color: #cc0033;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 15px;
+    margin: 5px 0 0;
+}
+
+.input-group .error-message {
+    display: none;
+}
+
+
+/* Error Styling */
+
+.error label {
+    color: #cc0033;
+}
+
+/* .error input[type=text] {
+    background-color: #fce4e4;
+    border: 1px solid #cc0033;
+    outline: none;
+} */
+
+.error .error-message {
+    display: inline-block;
+}
+
+.final-score-output {
+    position: absolute;
+    top: 20px;
+    left: 87%;
+    font-size: 16px;
+    color: #9098a9;
+    font-weight: 500;
+    margin: auto;
+    width: 100%;
+    max-width: 100px;
+    border-bottom: 2px solid #c8ccd4;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.final-score {
+    font-size: 35px;
 }
