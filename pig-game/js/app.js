@@ -47,7 +47,7 @@ function holdBtnHandler() {
     document.getElementById(
       'score-' + gameItems.activePlayer,
     ).textContent = playerScore;
-    gameItems.scores[gameItems.activePlayer] >= 20
+    gameItems.scores[gameItems.activePlayer] >= 100
       ? winnerHandler()
       : nextPlayer();
   }
