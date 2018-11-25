@@ -15,7 +15,7 @@ const gameItems = {
   diceRoll: [0, 0],
   finalScore: {
     isActive: false,
-    value: null,
+    value: 100,
   },
 };
 
@@ -27,6 +27,12 @@ const newGameButton = document.querySelector('.btn-new');
 const form = document.querySelector('.inp-score');
 const inp = document.getElementById('inp');
 const finalScore = document.querySelector('.final-score');
+const onStartModal = document.querySelector('.on-start-app');
+const onRollOneModal = document.querySelector('.on-roll-one');
+const onRollSixModal = document.querySelector('.on-roll-six');
+const modalStartBtn = document.querySelector('.modal-btn-start');
+const modalBtnOne = document.querySelector('.modal-btn-one');
+const modalBtnSix = document.querySelector('.modal-btn-six');
 
 newGameStart();
 
@@ -38,12 +44,11 @@ form.addEventListener('submit', setFinalScoreHanler);
 function setFinalScoreHanler(evt) {
   evt.preventDefault();
   if (!gameItems.finalScore.isActive) {
-    if (!isNaN(inp.value)) {
+    if (!isNaN(inp.value) && inp.value !== '') {
+      console.log(inp.value)
       gameItems.finalScore.value = inp.value;
       finalScore.textContent = gameItems.finalScore.value;
       inp.value = null;
-      gameItems.finalScore.isActive = true;
-      inp.disabled = true;
       form.classList.remove('error');
       finalScore.classList.remove('not-set');
     } else {
@@ -53,7 +58,7 @@ function setFinalScoreHanler(evt) {
 }
 
 function rollBtnHandler() {
-  if (gameItems.gamePlaying && gameItems.finalScore.value !== null) {
+  if (gameItems.gamePlaying && gameItems.finalScore.value !== false) {
     let randomOne = Math.floor(Math.random() * 6) + 1;
     let randomTwo = Math.floor(Math.random() * 6) + 1;
     fistDice.style.display = 'block';
@@ -64,6 +69,7 @@ function rollBtnHandler() {
     inp.disabled = true;
     gameItems.diceRoll[0] = randomOne;
     gameItems.diceRoll[1] = randomTwo;
+    form.classList.add('hide');
     if (
       randomOne === 6 &&
       gameItems.diceRoll[0] === 6 &&
@@ -73,19 +79,22 @@ function rollBtnHandler() {
         '0';
       gameItems.scores[gameItems.activePlayer] = 0;
       nextPlayer();
+      onRollSixModal.classList.remove('hide');
       console.log('Rolling SIX');
     } else if (randomOne !== 1 && randomTwo !== 1) {
+      
       gameItems.roundScore += randomOne + randomTwo;
       document.getElementById('current-' + gameItems.activePlayer).textContent =
         gameItems.roundScore;
     } else {
+      onRollOneModal.classList.remove('hide');
       nextPlayer();
     }
   }
 }
 
 function holdBtnHandler() {
-  if (gameItems.gamePlaying && gameItems.finalScore.value !== null) {
+  if (gameItems.gamePlaying && gameItems.finalScore.isActive !== false) {
     let playerScore = (gameItems.scores[gameItems.activePlayer] +=
       gameItems.roundScore);
     document.getElementById(
@@ -149,8 +158,21 @@ function newGameStart() {
   gameItems.gamePlaying = true;
   gameItems.finalScore.isActive = false;
   inp.disabled = false;
+  form.classList.remove('hide');
   if (!gameItems.finalScore.value) {
     finalScore.classList.add('not-set');
     finalScore.textContent = 'Set final score';
   }
 }
+
+modalBtnOne.addEventListener('click', () => {
+  onRollOneModal.classList.add('hide');
+})
+
+modalBtnSix.addEventListener('click', ()=>{
+  onRollSixModal.classList.add('hide');
+})
+
+modalStartBtn.addEventListener('click', () => {
+  onStartModal.classList.add('hide');
+})
