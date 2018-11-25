@@ -320,6 +320,14 @@ i {
     text-transform: uppercase;
 }
 
+
+
 .final-score {
     font-size: 35px;
+}
+
+.final-score.not-set {
+    font-size: 15px;
+    color: red;
+    font-weight: 600;
 }

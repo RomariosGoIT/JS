@@ -24,7 +24,7 @@ const secondDice = document.querySelector('.dice-1');
 const rollButton = document.querySelector('.btn-roll');
 const holdButton = document.querySelector('.btn-hold');
 const newGameButton = document.querySelector('.btn-new');
-const inpButton = document.querySelector('.inp-score');
+const form = document.querySelector('.inp-score');
 const inp = document.getElementById('inp');
 const finalScore = document.querySelector('.final-score');
 
@@ -33,7 +33,7 @@ newGameStart();
 rollButton.addEventListener('click', rollBtnHandler);
 holdButton.addEventListener('click', holdBtnHandler);
 newGameButton.addEventListener('click', newGameBtnHandler);
-inpButton.addEventListener('submit', setFinalScoreHanler);
+form.addEventListener('submit', setFinalScoreHanler);
 
 function setFinalScoreHanler(evt) {
   evt.preventDefault();
@@ -44,9 +44,10 @@ function setFinalScoreHanler(evt) {
       inp.value = null;
       gameItems.finalScore.isActive = true;
       inp.disabled = true;
-      inpButton.classList.remove('error');
+      form.classList.remove('error');
+      finalScore.classList.remove('not-set');
     } else {
-      inpButton.classList.add('error');
+      form.classList.add('error');
     }
   }
 }
@@ -143,4 +144,8 @@ function newGameStart() {
   gameItems.gamePlaying = true;
   gameItems.finalScore.isActive = false;
   inp.disabled = false;
+  if (!gameItems.finalScore.value) {
+    finalScore.classList.add('not-set');
+    finalScore.textContent = 'Set final score';
+  }
 }
