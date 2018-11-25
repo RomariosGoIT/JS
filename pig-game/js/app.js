@@ -12,14 +12,15 @@ const gameItems = {
   roundScore: 0,
   activePlayer: 0,
   gamePlaying: true,
-  diceRoll: 0,
+  diceRoll: [0, 0],
   finalScore: {
     isActive: false,
     value: null,
   },
 };
 
-const diceRoll = document.querySelector('.dice');
+const fistDice = document.querySelector('.dice-0');
+const secondDice = document.querySelector('.dice-1');
 const rollButton = document.querySelector('.btn-roll');
 const holdButton = document.querySelector('.btn-hold');
 const newGameButton = document.querySelector('.btn-new');
@@ -52,14 +53,23 @@ function setFinalScoreHanler(evt) {
 
 function rollBtnHandler() {
   if (gameItems.gamePlaying && gameItems.finalScore.value !== null) {
-    let random = Math.floor(Math.random() * 6) + 1;
-    diceRoll.style.display = 'block';
-    diceRoll.src = './img/dice-' + random + '.png';
-    random === 6 ? (gameItems.diceRoll += 6) : null;
+    let randomOne = Math.floor(Math.random() * 6) + 1;
+    let randomTwo = Math.floor(Math.random() * 6) + 1;
+    fistDice.style.display = 'block';
+    secondDice.style.display = 'block';
+    fistDice.src = './img/dice-' + randomOne + '.png';
+    secondDice.src = './img/dice-' + randomTwo + '.png';
+    randomOne === 6 ? (gameItems.diceRoll[0] += 6) : null;
+    randomTwo === 6 ? (gameItems.diceRoll[1] += 6) : null;
     gameItems.finalScore.isActive = true;
     inp.disabled = true;
-    if (random !== 1 && gameItems.diceRoll !== 12) {
-      gameItems.roundScore += random;
+    if (
+      randomOne !== 1 &&
+      (randomTwo !== 1 &&
+        gameItems.diceRoll[0] !== 12 &&
+        gameItems.diceRoll[1] !== 12)
+    ) {
+      gameItems.roundScore += randomOne + randomTwo;
       document.getElementById('current-' + gameItems.activePlayer).textContent =
         gameItems.roundScore;
     } else {
@@ -94,15 +104,17 @@ function winnerHandler() {
     .classList.remove('active');
   document.getElementById('name-' + gameItems.activePlayer).textContent =
     'Winner!';
-  diceRoll.style.display = 'none';
+  fistDice.style.display = 'none';
+  secondDice.style.display = 'none';
   gameItems.gamePlaying = false;
 }
 
 function nextPlayer() {
   document.getElementById('current-' + gameItems.activePlayer).textContent = 0;
   gameItems.roundScore = 0;
-  gameItems.diceRoll = 0;
-  diceRoll.style.display = 'none';
+  gameItems.diceRoll = [0, 0];
+  fistDice.style.display = 'none';
+  secondDice.style.display = 'none';
   gameItems.activePlayer === 0
     ? (gameItems.activePlayer = 1)
     : (gameItems.activePlayer = 0);
@@ -119,8 +131,9 @@ function newGameStart() {
   gameItems.scores = [0, 0];
   gameItems.roundScore = 0;
   gameItems.activePlayer = 0;
-  gameItems.diceRoll = 0;
-  diceRoll.style.display = 'none';
+  gameItems.diceRoll = [0, 0];
+  fistDice.style.display = 'none';
+  secondDice.style.display = 'none';
   document.querySelector('.player-0-panel').classList.add('active');
   document.querySelector('.player-1-panel').classList.remove('active');
   document.querySelector('.player-0-panel').classList.remove('winner');
