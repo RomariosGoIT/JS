@@ -12,6 +12,7 @@ const gameItems = {
   roundScore: 0,
   activePlayer: 0,
   gamePlaying: true,
+  diceRoll: 0,
 };
 
 const diceRoll = document.querySelector('.dice');
@@ -30,7 +31,8 @@ function rollBtnHandler() {
     let random = Math.floor(Math.random() * 6) + 1;
     diceRoll.style.display = 'block';
     diceRoll.src = './img/dice-' + random + '.png';
-    if (random !== 1) {
+    random === 6 ? (gameItems.diceRoll += 6) : null;
+    if (random !== 1 && gameItems.diceRoll !== 12) {
       gameItems.roundScore += random;
       document.getElementById('current-' + gameItems.activePlayer).textContent =
         gameItems.roundScore;
@@ -73,6 +75,7 @@ function winnerHandler() {
 function nextPlayer() {
   document.getElementById('current-' + gameItems.activePlayer).textContent = 0;
   gameItems.roundScore = 0;
+  gameItems.diceRoll = 0;
   diceRoll.style.display = 'none';
   gameItems.activePlayer === 0
     ? (gameItems.activePlayer = 1)
@@ -89,6 +92,7 @@ function startNewGame() {
   gameItems.scores = [0, 0];
   gameItems.roundScore = 0;
   gameItems.activePlayer = 0;
+  gameItems.diceRoll = 0;
   diceRoll.style.display = 'none';
   document.querySelector('.player-0-panel').classList.add('active');
   document.querySelector('.player-1-panel').classList.remove('active');
