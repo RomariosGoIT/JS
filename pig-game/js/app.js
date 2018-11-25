@@ -60,8 +60,6 @@ function rollBtnHandler() {
     secondDice.style.display = 'block';
     fistDice.src = './img/dice-' + randomOne + '.png';
     secondDice.src = './img/dice-' + randomTwo + '.png';
-    randomOne === 6 ? (gameItems.diceRoll[0] += 6) : null;
-    randomTwo === 6 ? (gameItems.diceRoll[1] += 6) : null;
     gameItems.finalScore.isActive = true;
     inp.disabled = true;
     gameItems.diceRoll[0] = randomOne;
