@@ -18,45 +18,46 @@
   </head>
 
   <body>
-    <div class="ovelay on-start-app">
-      <div class="modal on-start">
-        <h3>Welcom to my PIG-GAME</h3>
-        <span class="rules">
-                <strong>GAME RULES:</strong>></br>
-                - The game has 2 players, playing in rounds</br>
-                - In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score</br>
-                - BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn</br>
-                - AND, if the player rolls a 6, all his ROUND and TOTAL score gets lost. After that, it's the next player's turn</br>
-                - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn</br>
-                - The first player to reach 100 (by default) points on GLOBAL score wins the game</br>
-                - You also can set winning score before game start, in "Set winning score" field, on a left top corner of a game</br>
-            </span>
-        <button class="modal-btn-start">Start Game</button>
-      </div>
-    </div>
-
-    <div class="ovelay on-roll-one hide">
-      <div class="modal">
-        <h3>Bad luck</h3>
-        <p>You Roll:</p>
-        <img src="./img/dice-1.png" alt="Dice" class="dice-modal" />
-        <span>You lose your current score, and move!</span>
-        <button class="modal-btn-one">Ok</button>
-      </div>
-    </div>
-
-    <div class="ovelay on-roll-six hide">
-      <div class="modal">
-        <h3>You are king of luck!</h3>
-        <p>You Roll:</p>
-        <img src="./img/dice-6.png" alt="Dice" class="dice-modal-oneS" />
-        <img src="./img/dice-6.png" alt="Dice" class="dice-modal-twoS" />
-        <span>You lose your current score, total score and move!</span>
-        <button class="modal-btn-six">Ok</button>
-      </div>
-    </div>
+    
 
     <div class="wrapper clearfix">
+    <div class="ovelay on-start-app">
+        <div class="modal on-start">
+            <h3>Welcom to my PIG-GAME</h3>
+            <span class="rules">
+            <strong>GAME RULES:</strong>></br>
+            - The game has 2 players, playing in rounds</br>
+            - In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score</br>
+            - BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn</br>
+            - AND, if the player rolls a 6, all his ROUND and TOTAL score gets lost. After that, it's the next player's turn</br>
+            - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn</br>
+            - The first player to reach 100 (by default) points on GLOBAL score wins the game</br>
+            - You also can set winning score before game start, in "Set winning score" field, on a left top corner of a game</br>
+            </span>
+            <button class="modal-btn-start">Start Game</button>
+        </div>
+        </div>
+
+        <div class="ovelay on-roll-one hide">
+        <div class="modal">
+            <h3>Bad luck</h3>
+            <p>You Roll:</p>
+            <img src="./img/dice-1.png" alt="Dice" class="dice-modal" />
+            <span>You lose your current score, and move!</span>
+            <button class="modal-btn-one">Ok</button>
+        </div>
+        </div>
+
+        <div class="ovelay on-roll-six hide">
+        <div class="modal">
+            <h3>You are king of luck!</h3>
+            <p>You Roll:</p>
+            <img src="./img/dice-6.png" alt="Dice" class="dice-modal-oneS" />
+            <img src="./img/dice-6.png" alt="Dice" class="dice-modal-twoS" />
+            <span>You lose your current score, total score and move!</span>
+            <button class="modal-btn-six">Ok</button>
+        </div>
+        </div>
       <div class="player-0-panel active">
         <div class="player-name" id="name-0">Player 1</div>
         <div class="player-score" id="score-0">43</div>
