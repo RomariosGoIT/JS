@@ -11,6 +11,7 @@ const gameItems = {
   scores: [0, 0],
   roundScore: 0,
   activePlayer: 0,
+  gamePlaying: true,
 };
 
 const diceRoll = document.querySelector('.dice');
@@ -25,27 +26,31 @@ holdButton.addEventListener('click', holdBtnHandler);
 newGameButton.addEventListener('click', newGameBtnHandler);
 
 function rollBtnHandler() {
-  let random = Math.floor(Math.random() * 6) + 1;
-  diceRoll.style.display = 'block';
-  diceRoll.src = './img/dice-' + random + '.png';
-  if (random !== 1) {
-    gameItems.roundScore += random;
-    document.getElementById('current-' + gameItems.activePlayer).textContent =
-      gameItems.roundScore;
-  } else {
-    nextPlayer();
+  if (gameItems.gamePlaying) {
+    let random = Math.floor(Math.random() * 6) + 1;
+    diceRoll.style.display = 'block';
+    diceRoll.src = './img/dice-' + random + '.png';
+    if (random !== 1) {
+      gameItems.roundScore += random;
+      document.getElementById('current-' + gameItems.activePlayer).textContent =
+        gameItems.roundScore;
+    } else {
+      nextPlayer();
+    }
   }
 }
 
 function holdBtnHandler() {
-  let playerScore = (gameItems.scores[gameItems.activePlayer] +=
-    gameItems.roundScore);
-  document.getElementById(
-    'score-' + gameItems.activePlayer,
-  ).textContent = playerScore;
-  gameItems.scores[gameItems.activePlayer] >= 100
-    ? winnerHandler()
-    : nextPlayer();
+  if (gameItems.gamePlaying) {
+    let playerScore = (gameItems.scores[gameItems.activePlayer] +=
+      gameItems.roundScore);
+    document.getElementById(
+      'score-' + gameItems.activePlayer,
+    ).textContent = playerScore;
+    gameItems.scores[gameItems.activePlayer] >= 20
+      ? winnerHandler()
+      : nextPlayer();
+  }
 }
 
 function newGameBtnHandler() {
@@ -62,8 +67,7 @@ function winnerHandler() {
   document.getElementById('name-' + gameItems.activePlayer).textContent =
     'Winner!';
   diceRoll.style.display = 'none';
-  rollButton.disabled = true;
-  holdButton.disabled = true;
+  gameItems.gamePlaying = false;
 }
 
 function nextPlayer() {
@@ -92,6 +96,5 @@ function startNewGame() {
   document.querySelector('.player-1-panel').classList.remove('winner');
   document.getElementById('name-0').textContent = 'Player 1';
   document.getElementById('name-1').textContent = 'Player 2';
-  rollButton.disabled = false;
-  holdButton.disabled = false;
+  gameItems.gamePlaying = true;
 }
