@@ -64,12 +64,19 @@ function rollBtnHandler() {
     randomTwo === 6 ? (gameItems.diceRoll[1] += 6) : null;
     gameItems.finalScore.isActive = true;
     inp.disabled = true;
+    gameItems.diceRoll[0] = randomOne;
+    gameItems.diceRoll[1] = randomTwo;
     if (
-      randomOne !== 1 &&
-      (randomTwo !== 1 &&
-        gameItems.diceRoll[0] !== 12 &&
-        gameItems.diceRoll[1] !== 12)
+      randomOne === 6 &&
+      gameItems.diceRoll[0] === 6 &&
+      (randomTwo === 6 && gameItems.diceRoll[1] === 6)
     ) {
+      document.getElementById('score-' + gameItems.activePlayer).textContent =
+        '0';
+      gameItems.scores[gameItems.activePlayer] = 0;
+      nextPlayer();
+      console.log('Rolling SIX');
+    } else if (randomOne !== 1 && randomTwo !== 1) {
       gameItems.roundScore += randomOne + randomTwo;
       document.getElementById('current-' + gameItems.activePlayer).textContent =
         gameItems.roundScore;
