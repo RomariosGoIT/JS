@@ -7,11 +7,10 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 */
 
-
 const gameItems = {
   scores: [0, 0],
   roundScore: 0,
-  activePlayer: 0
+  activePlayer: 0,
 };
 
 const diceRoll = document.querySelector('.dice');
@@ -21,51 +20,62 @@ const newGameButton = document.querySelector('.btn-new');
 
 startNewGame();
 
-function rollBtnHandler() {  
+function rollBtnHandler() {
   let random = Math.floor(Math.random() * 6) + 1;
   diceRoll.style.display = 'block';
   diceRoll.src = './img/dice-' + random + '.png';
-  if(random !== 1) {
+  if (random !== 1) {
     gameItems.roundScore += random;
-    document.getElementById('current-' + gameItems.activePlayer).textContent = gameItems.roundScore;
+    document.getElementById('current-' + gameItems.activePlayer).textContent =
+      gameItems.roundScore;
   } else {
     nextPlayer();
   }
-};
+}
 
-function holdBtnHandler() {    
-    let playerScore = gameItems.scores[gameItems.activePlayer] += gameItems.roundScore;
-    document.getElementById('score-' + gameItems.activePlayer).textContent = playerScore;
-    gameItems.scores[gameItems.activePlayer] >= 100 ? winnerHandler() : nextPlayer();    
-};
+function holdBtnHandler() {
+  let playerScore = (gameItems.scores[gameItems.activePlayer] +=
+    gameItems.roundScore);
+  document.getElementById(
+    'score-' + gameItems.activePlayer,
+  ).textContent = playerScore;
+  gameItems.scores[gameItems.activePlayer] >= 100
+    ? winnerHandler()
+    : nextPlayer();
+}
 
 function newGameBtnHandler() {
-  startNewGame();  
-};
+  startNewGame();
+}
 
 function winnerHandler() {
-  document.querySelector('.player-' + gameItems.activePlayer + '-panel').classList.add('winner');
-  document.querySelector('.player-' + gameItems.activePlayer + '-panel').classList.remove('active');
-  document.getElementById('name-' + gameItems.activePlayer).textContent = 'Winner!';
+  document
+    .querySelector('.player-' + gameItems.activePlayer + '-panel')
+    .classList.add('winner');
+  document
+    .querySelector('.player-' + gameItems.activePlayer + '-panel')
+    .classList.remove('active');
+  document.getElementById('name-' + gameItems.activePlayer).textContent =
+    'Winner!';
   diceRoll.style.display = 'none';
-  rollButton.disabled  = true;
-  holdButton.disabled  = true;
-};
-
+  rollButton.disabled = true;
+  holdButton.disabled = true;
+}
 
 rollButton.addEventListener('click', rollBtnHandler);
 holdButton.addEventListener('click', holdBtnHandler);
 newGameButton.addEventListener('click', newGameBtnHandler);
 
-
 function nextPlayer() {
   document.getElementById('current-' + gameItems.activePlayer).textContent = 0;
   gameItems.roundScore = 0;
   diceRoll.style.display = 'none';
-  gameItems.activePlayer === 0 ? gameItems.activePlayer = 1 : gameItems.activePlayer = 0;
+  gameItems.activePlayer === 0
+    ? (gameItems.activePlayer = 1)
+    : (gameItems.activePlayer = 0);
   document.querySelector('.player-0-panel').classList.toggle('active');
   document.querySelector('.player-1-panel').classList.toggle('active');
-};
+}
 
 function startNewGame() {
   document.getElementById('score-0').textContent = '0';
@@ -80,8 +90,8 @@ function startNewGame() {
   document.querySelector('.player-1-panel').classList.remove('active');
   document.querySelector('.player-0-panel').classList.remove('winner');
   document.querySelector('.player-1-panel').classList.remove('winner');
-  document.getElementById('name-0').textContent = 'Player 1';  
-  document.getElementById('name-1').textContent = 'Player 2';  
+  document.getElementById('name-0').textContent = 'Player 1';
+  document.getElementById('name-1').textContent = 'Player 2';
   rollButton.disabled = false;
   holdButton.disabled = false;
-};
+}
