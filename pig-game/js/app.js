@@ -45,7 +45,7 @@ function setFinalScoreHanler(evt) {
   evt.preventDefault();
   if (!gameItems.finalScore.isActive) {
     if (!isNaN(inp.value) && inp.value !== '') {
-      console.log(inp.value)
+      console.log(inp.value);
       gameItems.finalScore.value = inp.value;
       finalScore.textContent = gameItems.finalScore.value;
       inp.value = null;
@@ -80,9 +80,7 @@ function rollBtnHandler() {
       gameItems.scores[gameItems.activePlayer] = 0;
       nextPlayer();
       onRollSixModal.classList.remove('hide');
-      console.log('Rolling SIX');
     } else if (randomOne !== 1 && randomTwo !== 1) {
-      
       gameItems.roundScore += randomOne + randomTwo;
       document.getElementById('current-' + gameItems.activePlayer).textContent =
         gameItems.roundScore;
@@ -167,12 +165,12 @@ function newGameStart() {
 
 modalBtnOne.addEventListener('click', () => {
   onRollOneModal.classList.add('hide');
-})
+});
 
-modalBtnSix.addEventListener('click', ()=>{
+modalBtnSix.addEventListener('click', () => {
   onRollSixModal.classList.add('hide');
-})
+});
 
 modalStartBtn.addEventListener('click', () => {
   onStartModal.classList.add('hide');
-})
+});
