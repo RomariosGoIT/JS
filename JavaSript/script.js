@@ -64,21 +64,66 @@
 
 // calcutateAge(1983);
 
-let a = "Hello ";
+// let a = "Hello ";
 
-first();
+// first();
 
-function first() {
-  let b = " Roma ";
-  second(b);
+// function first() {
+//   let b = " Roma ";
+//   second(b);
 
-  function second(b) {
-    let c = "friend";
-    third(c, b);
-  }
+//   function second(b) {
+//     let c = "friend";
+//     third(c, b);
+//   }
+// }
+
+// function third(b, c) {
+//   let z = "best";
+//   console.log(a + b + c + z);
+// }
+
+// let num = 1;
+
+// (goodLuck => {
+//   let score = Math.random() * 10;
+//   console.log(score > 5 - goodLuck);
+// })(num);
+
+///===================
+// Lecture: Closures
+
+// function retirement(retirementAge) {
+//   const text = ' years left until retirement!';
+//   return yearOfBirht => {
+//     let age = 2018 - yearOfBirht;
+//     console.log(retirementAge - age + text);
+//   };
+// }
+
+// retirement(65)(1983);
+
+function interviewQuestion(job) {
+  const question = {
+    designer: ' can you please explain what UX disign about?',
+    teacher: 'What subject do you teach, ',
+    noJob: 'Hello, what do you do, ',
+  };
+  return function(name) {
+    switch (job) {
+      case 'designer':
+        console.log(name + question[job]);
+        break;
+      case 'teacher':
+        console.log(question[job] + name + '?');
+        break;
+      default:
+        console.log(question.noJob + name + '?');
+        break;
+    }
+  };
 }
 
-function third(b, c) {
-  let z = "best";
-  console.log(a + b + c + z);
-}
+interviewQuestion('designer')('John');
+interviewQuestion('teacher')('Mark');
+interviewQuestion()('Andrey');
