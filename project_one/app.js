@@ -3,23 +3,34 @@ const BUDGET_CONTROLLER = (() => {
 })();
 
 const UI_CONTROLLER = (() => {
-  // some code
+  const DOM_CLASSES = {
+    typeInp: '.add__type',
+    descriptionInp: '.add__description',
+    valueInp: '.add__value',
+    addBtn: '.add__btn',
+  };
+
+  const { typeInp, descriptionInp, valueInp } = DOM_CLASSES;
+
   return {
     getInput: () => {
-      let type = document.querySelector('.add__type').value;
-      let description = document.querySelector('.add__description').value;
-      let value = document.querySelector('.add__value').value;
-      return { type, description, value };
+      return {
+        type: document.querySelector(typeInp).value,
+        description: document.querySelector(descriptionInp).value,
+        value: document.querySelector(valueInp).value,
+      };
     },
+    getDOMclasses: () => DOM_CLASSES,
   };
 })();
 
 const APP_CONTROLLER = ((budget, ui) => {
+  const { addBtn } = ui.getDOMclasses();
   clickHandler = () => {
     const input = ui.getInput();
     console.log(input);
   };
-  document.querySelector('.add__btn').addEventListener('click', clickHandler);
+  document.querySelector(addBtn).addEventListener('click', clickHandler);
 
   document.addEventListener('keydown', event => {
     if (event.keyCode === 13 || event.which === 13) {
