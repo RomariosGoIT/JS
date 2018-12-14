@@ -10,7 +10,6 @@ GAME RULES:
 https://romariosgoit.github.io/JS/pig-game/
 
 
-My Budget APP 
-=======================================
-
+My BUDGET APP
+/=============================================/
 https://romariosgoit.github.io/JS/project_one
