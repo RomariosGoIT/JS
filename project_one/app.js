@@ -1,4 +1,28 @@
 const BUDGET_CONTROLLER = (() => {
+  class Expense {
+    constructor(id, description, value) {
+      this.id = id;
+      this.description = description;
+      this.value = value;
+    }
+  }
+  class Income extends Expense {
+    constructor(id, description, value) {
+      super(id, description, value);
+    }
+  }
+
+  const data = {
+    allItems: {
+      exp: [],
+      inc: [],
+    },
+    totals: {
+      exp: 0,
+      inc: 0,
+    },
+  };
+
   // some code
 })();
 
@@ -25,18 +49,28 @@ const UI_CONTROLLER = (() => {
 })();
 
 const APP_CONTROLLER = ((budget, ui) => {
-  const { addBtn } = ui.getDOMclasses();
+  iventListenersHandler = () => {
+    const { addBtn } = ui.getDOMclasses();
+    document.querySelector(addBtn).addEventListener('click', clickHandler);
+
+    document.addEventListener('keydown', event => {
+      if (event.keyCode === 13 || event.which === 13) {
+        clickHandler();
+      }
+    });
+  };
   clickHandler = () => {
     const input = ui.getInput();
-    console.log(input);
   };
-  document.querySelector(addBtn).addEventListener('click', clickHandler);
 
-  document.addEventListener('keydown', event => {
-    if (event.keyCode === 13 || event.which === 13) {
-      clickHandler();
-    }
-  });
+  return {
+    init: () => {
+      console.log('Application started');
+      return iventListenersHandler();
+    },
+  };
 
   // some code
 })(BUDGET_CONTROLLER, UI_CONTROLLER);
+
+APP_CONTROLLER.init();
