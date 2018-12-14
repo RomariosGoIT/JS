@@ -12,6 +12,14 @@ const BUDGET_CONTROLLER = (() => {
     }
   }
 
+  calculateTotals = type => {
+    let sum = 0;
+    data.allItems[type].forEach(({ value }) => {
+      sum += value;
+    });
+    data.totals[type] = sum;
+  };
+
   const data = {
     allItems: {
       exp: [],
@@ -21,6 +29,8 @@ const BUDGET_CONTROLLER = (() => {
       exp: 0,
       inc: 0,
     },
+    budget: 0,
+    percentage: null,
   };
 
   return {
@@ -42,6 +52,25 @@ const BUDGET_CONTROLLER = (() => {
       data.allItems[type].push(newItem);
       return newItem;
     },
+    calculateBudget: type => {
+      calculateTotals(type);
+      data.budget = data.totals.inc - data.totals.exp;
+      if (data.totals.inc > 0) {
+        data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+      }
+    },
+    getBudget: () => {
+      return {
+        incTotal: data.totals.inc,
+        expTotal: data.totals.exp,
+        budget: data.budget,
+        percentage: data.percentage,
+      };
+    },
+
+    test: () => {
+      console.log(data);
+    },
   };
 
   // some code
@@ -55,6 +84,10 @@ const UI_CONTROLLER = (() => {
     addBtn: '.add__btn',
     incomeList: '.income__list',
     expensesList: '.expenses__list',
+    budgetLable: '.budget__value',
+    incLable: '.budget__income--value',
+    expLable: '.budget__expenses--value',
+    percLable: '.budget__expenses--percentage',
   };
 
   const {
@@ -63,6 +96,10 @@ const UI_CONTROLLER = (() => {
     valueInp,
     incomeList,
     expensesList,
+    budgetLable,
+    incLable,
+    expLable,
+    percLable,
   } = DOM_CLASSES;
 
   return {
@@ -70,13 +107,13 @@ const UI_CONTROLLER = (() => {
       return {
         type: document.querySelector(typeInp).value,
         description: document.querySelector(descriptionInp).value,
-        value: document.querySelector(valueInp).value,
+        value: parseFloat(document.querySelector(valueInp).value),
       };
     },
     getDOMclasses: () => DOM_CLASSES,
     addItemItem: ({ id, description, value }, type) => {
       let html;
-      if (type === 'inc' && description !== '') {
+      if (type === 'inc') {
         html = `<div class="item clearfix" id="income-${id}">
             <div class="item__description">${description}</div>
             <div class="right clearfix">
@@ -89,7 +126,7 @@ const UI_CONTROLLER = (() => {
         return document
           .querySelector(incomeList)
           .insertAdjacentHTML('beforeend', html);
-      } else if (type === 'exp' && description !== '') {
+      } else if (type === 'exp') {
         html = `<div class="item clearfix" id="expense-${id}">
             <div class="item__description">${description}</div>
             <div class="right clearfix">
@@ -112,6 +149,15 @@ const UI_CONTROLLER = (() => {
       const fieldsArr = Array.prototype.slice.call(fields);
 
       fieldsArr.forEach(input => (input.value = ''));
+      fieldsArr[0].focus();
+    },
+    dispalyBudget: ({ incTotal, expTotal, budget, percentage }) => {
+      document.querySelector(budgetLable).textContent = budget;
+      document.querySelector(incLable).textContent = incTotal;
+      document.querySelector(expLable).textContent = expTotal;
+      document.querySelector(percLable).textContent = percentage
+        ? `${percentage}%`
+        : '---';
     },
   };
 })();
@@ -127,17 +173,35 @@ const APP_CONTROLLER = ((budget, ui) => {
       }
     });
   };
-  clickHandler = () => {
-    const { type, description, value } = ui.getInput();
-    const newItem = budget.addItem(type, description, value);
-    ui.addItemItem(newItem, type);
-    ui.clearFields();
+
+  updateBudget = type => {
+    BUDGET_CONTROLLER.calculateBudget(type);
+    const budget = BUDGET_CONTROLLER.getBudget();
+    ui.dispalyBudget(budget);
+    console.log(budget);
+    //value
   };
 
+  clickHandler = () => {
+    const { type, description, value } = ui.getInput();
+    if (value !== '' && !isNaN(value) && value > 0) {
+      const newItem = budget.addItem(type, description, value);
+      ui.addItemItem(newItem, type);
+      updateBudget(type);
+    }
+
+    ui.clearFields();
+  };
   return {
     init: () => {
       console.log('Application started');
-      return iventListenersHandler();
+      ui.dispalyBudget({
+        incTotal: 0,
+        expTotal: 0,
+        budget: 0,
+        percentage: null,
+      });
+      iventListenersHandler();
     },
   };
 
