@@ -23,6 +23,27 @@ const BUDGET_CONTROLLER = (() => {
     },
   };
 
+  return {
+    addItem: (type, descr, val) => {
+      let newItem, ID;
+
+      if (data.allItems[type].length > 0) {
+        ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+      } else {
+        ID = 0;
+      }
+
+      if (type === 'exp') {
+        newItem = new Expense(ID, descr, val);
+      } else if (type === 'inc') {
+        newItem = new Income(ID, descr, val);
+      }
+
+      data.allItems[type].push(newItem);
+      return newItem;
+    },
+  };
+
   // some code
 })();
 
@@ -60,7 +81,8 @@ const APP_CONTROLLER = ((budget, ui) => {
     });
   };
   clickHandler = () => {
-    const input = ui.getInput();
+    const { type, description, value } = ui.getInput();
+    budget.addItem(type, description, value);
   };
 
   return {
