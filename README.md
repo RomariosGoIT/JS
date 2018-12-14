@@ -8,11 +8,12 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game</br>
 </br>
 https://romariosgoit.github.io/JS/pig-game/
-
-
-
-My BUDGET APP
 </br>
-/=============================================/
+
+<hr>
+
+<strong>My BUDGET APP</strong>
+</br>
+<p>*****************************</p>
 </br>
 https://romariosgoit.github.io/JS/project_one
