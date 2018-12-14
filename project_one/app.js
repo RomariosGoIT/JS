@@ -53,9 +53,17 @@ const UI_CONTROLLER = (() => {
     descriptionInp: '.add__description',
     valueInp: '.add__value',
     addBtn: '.add__btn',
+    incomeList: '.income__list',
+    expensesList: '.expenses__list',
   };
 
-  const { typeInp, descriptionInp, valueInp } = DOM_CLASSES;
+  const {
+    typeInp,
+    descriptionInp,
+    valueInp,
+    incomeList,
+    expensesList,
+  } = DOM_CLASSES;
 
   return {
     getInput: () => {
@@ -66,6 +74,45 @@ const UI_CONTROLLER = (() => {
       };
     },
     getDOMclasses: () => DOM_CLASSES,
+    addItemItem: ({ id, description, value }, type) => {
+      let html;
+      if (type === 'inc' && description !== '') {
+        html = `<div class="item clearfix" id="income-${id}">
+            <div class="item__description">${description}</div>
+            <div class="right clearfix">
+                <div class="item__value">${value}</div>
+                <div class="item__delete">
+                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                </div>
+            </div>
+        </div>`;
+        return document
+          .querySelector(incomeList)
+          .insertAdjacentHTML('beforeend', html);
+      } else if (type === 'exp' && description !== '') {
+        html = `<div class="item clearfix" id="expense-${id}">
+            <div class="item__description">${description}</div>
+            <div class="right clearfix">
+                <div class="item__value">${value}</div>
+                    <div class="item__percentage">21%</div>
+                    <div class="item__delete">
+                        <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                    </div>
+            </div>
+        </div>`;
+        return document
+          .querySelector(expensesList)
+          .insertAdjacentHTML('beforeend', html);
+      }
+    },
+    clearFields: () => {
+      const fields = document.querySelectorAll(
+        `${valueInp}, ${descriptionInp}`,
+      );
+      const fieldsArr = Array.prototype.slice.call(fields);
+
+      fieldsArr.forEach(input => (input.value = ''));
+    },
   };
 })();
 
@@ -82,7 +129,9 @@ const APP_CONTROLLER = ((budget, ui) => {
   };
   clickHandler = () => {
     const { type, description, value } = ui.getInput();
-    budget.addItem(type, description, value);
+    const newItem = budget.addItem(type, description, value);
+    ui.addItemItem(newItem, type);
+    ui.clearFields();
   };
 
   return {
