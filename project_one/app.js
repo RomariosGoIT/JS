@@ -67,6 +67,13 @@ const BUDGET_CONTROLLER = (() => {
         percentage: data.percentage,
       };
     },
+    deleteItems: (type, id) => {
+      let ids = data.allItems[type].map(item => item.id);
+      let index = ids.indexOf(id);
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+    },
 
     test: () => {
       console.log(data);
@@ -88,6 +95,7 @@ const UI_CONTROLLER = (() => {
     incLable: '.budget__income--value',
     expLable: '.budget__expenses--value',
     percLable: '.budget__expenses--percentage',
+    container: '.container',
   };
 
   const {
@@ -114,7 +122,7 @@ const UI_CONTROLLER = (() => {
     addItemItem: ({ id, description, value }, type) => {
       let html;
       if (type === 'inc') {
-        html = `<div class="item clearfix" id="income-${id}">
+        html = `<div class="item clearfix" id="inc-${id}">
             <div class="item__description">${description}</div>
             <div class="right clearfix">
                 <div class="item__value">${value}</div>
@@ -127,7 +135,7 @@ const UI_CONTROLLER = (() => {
           .querySelector(incomeList)
           .insertAdjacentHTML('beforeend', html);
       } else if (type === 'exp') {
-        html = `<div class="item clearfix" id="expense-${id}">
+        html = `<div class="item clearfix" id="exp-${id}">
             <div class="item__description">${description}</div>
             <div class="right clearfix">
                 <div class="item__value">${value}</div>
@@ -141,6 +149,10 @@ const UI_CONTROLLER = (() => {
           .querySelector(expensesList)
           .insertAdjacentHTML('beforeend', html);
       }
+    },
+    deleteItems: id => {
+      let item = document.getElementById(id);
+      item.parentNode.removeChild(item);
     },
     clearFields: () => {
       const fields = document.querySelectorAll(
@@ -164,25 +176,29 @@ const UI_CONTROLLER = (() => {
 
 const APP_CONTROLLER = ((budget, ui) => {
   iventListenersHandler = () => {
-    const { addBtn } = ui.getDOMclasses();
-    document.querySelector(addBtn).addEventListener('click', clickHandler);
+    const { addBtn, container } = ui.getDOMclasses();
+    document.querySelector(addBtn).addEventListener('click', addItemsHandler);
 
     document.addEventListener('keydown', event => {
       if (event.keyCode === 13 || event.which === 13) {
-        clickHandler();
+        addItemsHandler();
       }
     });
+
+    document
+      .querySelector(container)
+      .addEventListener('click', deleteItemsHandler);
   };
 
   updateBudget = type => {
-    BUDGET_CONTROLLER.calculateBudget(type);
-    const budget = BUDGET_CONTROLLER.getBudget();
-    ui.dispalyBudget(budget);
-    console.log(budget);
+    budget.calculateBudget(type);
+    const budgetItem = budget.getBudget();
+    ui.dispalyBudget(budgetItem);
+    console.log(budgetItem);
     //value
   };
 
-  clickHandler = () => {
+  addItemsHandler = () => {
     const { type, description, value } = ui.getInput();
     if (value !== '' && !isNaN(value) && value > 0) {
       const newItem = budget.addItem(type, description, value);
@@ -192,6 +208,20 @@ const APP_CONTROLLER = ((budget, ui) => {
 
     ui.clearFields();
   };
+
+  deleteItemsHandler = ({ target }) => {
+    let itemId = target.parentNode.parentNode.parentNode.parentNode.id;
+    if (itemId) {
+      let splitId = itemId.split('-');
+      let type = splitId[0];
+      let ID = parseInt(splitId[1]);
+      budget.deleteItems(type, ID);
+      ui.deleteItems(itemId);
+      updateBudget(type);
+    }
+    console.log(itemId);
+  };
+
   return {
     init: () => {
       console.log('Application started');
