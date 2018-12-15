@@ -4,8 +4,20 @@ const BUDGET_CONTROLLER = (() => {
       this.id = id;
       this.description = description;
       this.value = value;
+      this.percentage = -1;
     }
   }
+
+  Expense.prototype.calcPercentage = function(totalInc) {
+    if (totalInc > 0) {
+      this.percentage = Math.round((this.value / totalInc) * 100);
+    }
+    console.log(this.value);
+  };
+  Expense.prototype.getPercentage = function() {
+    return this.percentage;
+  };
+
   class Income extends Expense {
     constructor(id, description, value) {
       super(id, description, value);
@@ -59,6 +71,15 @@ const BUDGET_CONTROLLER = (() => {
         data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
       }
     },
+    calculatePercentage: () => {
+      data.allItems.exp.forEach(val => val.calcPercentage(data.totals.inc));
+    },
+
+    getPercentage: () => {
+      const allPrc = data.allItems.exp.map(val => val.getPercentage());
+      return allPrc;
+    },
+
     getBudget: () => {
       return {
         incTotal: data.totals.inc,
@@ -96,6 +117,8 @@ const UI_CONTROLLER = (() => {
     expLable: '.budget__expenses--value',
     percLable: '.budget__expenses--percentage',
     container: '.container',
+    percentLable: '.item__percentage',
+    dateLable: '.budget__title--month',
   };
 
   const {
@@ -108,7 +131,24 @@ const UI_CONTROLLER = (() => {
     incLable,
     expLable,
     percLable,
+    percentLable,
+    dateLable,
   } = DOM_CLASSES;
+
+  formatNumbers = (num, type) => {
+    num = Math.abs(num);
+    num = num.toFixed(2);
+
+    let numSplit = num.split('.');
+    let int = numSplit[0];
+    if (int.length > 3) {
+      int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+    }
+
+    dec = numSplit[1];
+
+    return (type === 'inc' ? ' + ' : ' - ') + int + '.' + dec;
+  };
 
   return {
     getInput: () => {
@@ -125,7 +165,7 @@ const UI_CONTROLLER = (() => {
         html = `<div class="item clearfix" id="inc-${id}">
             <div class="item__description">${description}</div>
             <div class="right clearfix">
-                <div class="item__value">${value}</div>
+                <div class="item__value">${formatNumbers(value, type)}</div>
                 <div class="item__delete">
                     <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                 </div>
@@ -138,7 +178,7 @@ const UI_CONTROLLER = (() => {
         html = `<div class="item clearfix" id="exp-${id}">
             <div class="item__description">${description}</div>
             <div class="right clearfix">
-                <div class="item__value">${value}</div>
+                <div class="item__value">${formatNumbers(value, type)}</div>
                     <div class="item__percentage">21%</div>
                     <div class="item__delete">
                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
@@ -163,13 +203,61 @@ const UI_CONTROLLER = (() => {
       fieldsArr.forEach(input => (input.value = ''));
       fieldsArr[0].focus();
     },
-    dispalyBudget: ({ incTotal, expTotal, budget, percentage }) => {
-      document.querySelector(budgetLable).textContent = budget;
-      document.querySelector(incLable).textContent = incTotal;
-      document.querySelector(expLable).textContent = expTotal;
+    displayBudget: ({ incTotal, expTotal, budget, percentage }) => {
+      let type = budget > 0 ? 'inc' : 'exp';
+      document.querySelector(budgetLable).textContent = formatNumbers(
+        budget,
+        type,
+      );
+      document.querySelector(incLable).textContent = formatNumbers(
+        incTotal,
+        'inc',
+      );
+      document.querySelector(expLable).textContent = formatNumbers(
+        expTotal,
+        'exp',
+      );
       document.querySelector(percLable).textContent = percentage
         ? `${percentage}%`
         : '---';
+    },
+    displayPercentage: percentage => {
+      const percList = document.querySelectorAll(percentLable);
+
+      const listNodeForEach = (list, callback) => {
+        for (let i = 0; i < list.length; i++) {
+          callback(list[i], i);
+        }
+      };
+
+      listNodeForEach(percList, (curent, index) => {
+        if (percentage[index] > 0) {
+          curent.textContent = percentage[index] + '%';
+        } else {
+          curent.textContent = '--';
+        }
+      });
+    },
+    getDate: () => {
+      let now = new Date();
+      let mL = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+      let year = now.getFullYear();
+      let month = now.getMonth();
+      console.log(month);
+      document.querySelector(dateLable).textContent = `${mL[month]}  ${year}`;
     },
   };
 })();
@@ -193,9 +281,16 @@ const APP_CONTROLLER = ((budget, ui) => {
   updateBudget = type => {
     budget.calculateBudget(type);
     const budgetItem = budget.getBudget();
-    ui.dispalyBudget(budgetItem);
+    ui.displayBudget(budgetItem);
     console.log(budgetItem);
     //value
+  };
+
+  calculatePercentage = () => {
+    budget.calculatePercentage();
+    // some conde
+    const allPrc = budget.getPercentage();
+    ui.displayPercentage(allPrc);
   };
 
   addItemsHandler = () => {
@@ -204,6 +299,7 @@ const APP_CONTROLLER = ((budget, ui) => {
       const newItem = budget.addItem(type, description, value);
       ui.addItemItem(newItem, type);
       updateBudget(type);
+      calculatePercentage();
     }
 
     ui.clearFields();
@@ -218,6 +314,7 @@ const APP_CONTROLLER = ((budget, ui) => {
       budget.deleteItems(type, ID);
       ui.deleteItems(itemId);
       updateBudget(type);
+      calculatePercentage();
     }
     console.log(itemId);
   };
@@ -225,12 +322,13 @@ const APP_CONTROLLER = ((budget, ui) => {
   return {
     init: () => {
       console.log('Application started');
-      ui.dispalyBudget({
+      ui.displayBudget({
         incTotal: 0,
         expTotal: 0,
         budget: 0,
         percentage: null,
       });
+      ui.getDate();
       iventListenersHandler();
     },
   };
