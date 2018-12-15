@@ -12,7 +12,6 @@ const BUDGET_CONTROLLER = (() => {
     if (totalInc > 0) {
       this.percentage = Math.round((this.value / totalInc) * 100);
     }
-    console.log(this.value);
   };
   Expense.prototype.getPercentage = function() {
     return this.percentage;
@@ -100,8 +99,6 @@ const BUDGET_CONTROLLER = (() => {
       console.log(data);
     },
   };
-
-  // some code
 })();
 
 const UI_CONTROLLER = (() => {
@@ -125,6 +122,7 @@ const UI_CONTROLLER = (() => {
     typeInp,
     descriptionInp,
     valueInp,
+    addBtn,
     incomeList,
     expensesList,
     budgetLable,
@@ -148,6 +146,12 @@ const UI_CONTROLLER = (() => {
     dec = numSplit[1];
 
     return (type === 'inc' ? ' + ' : ' - ') + int + '.' + dec;
+  };
+
+  listNodeForEach = (list, callback) => {
+    for (let i = 0; i < list.length; i++) {
+      callback(list[i], i);
+    }
   };
 
   return {
@@ -224,12 +228,6 @@ const UI_CONTROLLER = (() => {
     displayPercentage: percentage => {
       const percList = document.querySelectorAll(percentLable);
 
-      const listNodeForEach = (list, callback) => {
-        for (let i = 0; i < list.length; i++) {
-          callback(list[i], i);
-        }
-      };
-
       listNodeForEach(percList, (curent, index) => {
         if (percentage[index] > 0) {
           curent.textContent = percentage[index] + '%';
@@ -238,6 +236,16 @@ const UI_CONTROLLER = (() => {
         }
       });
     },
+
+    changedType: () => {
+      let classList = [typeInp, descriptionInp, valueInp];
+      let fields = document.querySelectorAll(classList.join(','));
+      listNodeForEach(fields, current => {
+        current.classList.toggle('red-focus');
+      });
+      document.querySelector(addBtn).classList.toggle('red');
+    },
+
     getDate: () => {
       let now = new Date();
       let mL = [
@@ -256,7 +264,6 @@ const UI_CONTROLLER = (() => {
       ];
       let year = now.getFullYear();
       let month = now.getMonth();
-      console.log(month);
       document.querySelector(dateLable).textContent = `${mL[month]}  ${year}`;
     },
   };
@@ -264,7 +271,7 @@ const UI_CONTROLLER = (() => {
 
 const APP_CONTROLLER = ((budget, ui) => {
   iventListenersHandler = () => {
-    const { addBtn, container } = ui.getDOMclasses();
+    const { addBtn, container, typeInp } = ui.getDOMclasses();
     document.querySelector(addBtn).addEventListener('click', addItemsHandler);
 
     document.addEventListener('keydown', event => {
@@ -276,6 +283,8 @@ const APP_CONTROLLER = ((budget, ui) => {
     document
       .querySelector(container)
       .addEventListener('click', deleteItemsHandler);
+
+    document.querySelector(typeInp).addEventListener('change', ui.changedType);
   };
 
   updateBudget = type => {
@@ -283,12 +292,10 @@ const APP_CONTROLLER = ((budget, ui) => {
     const budgetItem = budget.getBudget();
     ui.displayBudget(budgetItem);
     console.log(budgetItem);
-    //value
   };
 
   calculatePercentage = () => {
     budget.calculatePercentage();
-    // some conde
     const allPrc = budget.getPercentage();
     ui.displayPercentage(allPrc);
   };
