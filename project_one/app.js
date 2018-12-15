@@ -291,7 +291,6 @@ const APP_CONTROLLER = ((budget, ui) => {
     budget.calculateBudget(type);
     const budgetItem = budget.getBudget();
     ui.displayBudget(budgetItem);
-    console.log(budgetItem);
   };
 
   calculatePercentage = () => {
@@ -323,7 +322,6 @@ const APP_CONTROLLER = ((budget, ui) => {
       updateBudget(type);
       calculatePercentage();
     }
-    console.log(itemId);
   };
 
   return {
