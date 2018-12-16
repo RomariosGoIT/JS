@@ -7,11 +7,23 @@
 //   years.forEach(age => console.log(2018 - age >= 18));
 // };
 
-// isFullAge(1999, 2015, 1983);
+// // isFullAge(1999, 2015, 1983);
 
-const question = new Map();
-question.set(
-  'question',
-  'What is the official name of the last major JavaScript version?',
-);
-console.log(question);
+// const question = new Map();
+// question.set(
+//   'question',
+//   'What is the official name of the last major JavaScript version?',
+// );
+// console.log(question);
+
+class Developer {
+  question() {
+    return console.log('This is my question');
+  }
+}
+
+const newDev = new Developer('Roma');
+
+newDev.question();
+
+console.log(newDev);
