@@ -6,16 +6,15 @@ const BUDGET_CONTROLLER = (() => {
       this.value = value;
       this.percentage = -1;
     }
-  }
-
-  Expense.prototype.calcPercentage = function(totalInc) {
-    if (totalInc > 0) {
-      this.percentage = Math.round((this.value / totalInc) * 100);
+    calcPercentage(totalInc) {
+      if (totalInc > 0) {
+        this.percentage = Math.round((this.value / totalInc) * 100);
+      }
     }
-  };
-  Expense.prototype.getPercentage = function() {
-    return this.percentage;
-  };
+    getPercentage() {
+      return this.percentage;
+    }
+  }
 
   class Income extends Expense {
     constructor(id, description, value) {
