@@ -42,7 +42,6 @@ const renderRecipe = recipe => {
 };
 
 const createBbutton = (page, type) => {
-  console.log(page);
   const btn = `
     <button class="btn-inline results__btn--${type}" data-goto=${
     type === 'prev' ? page - 1 : page + 1
