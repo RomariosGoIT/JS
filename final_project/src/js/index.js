@@ -17,11 +17,15 @@ const controlSearch = async event => {
   Spinner.renderLoader(searchResult);
   if (query) {
     state.search = new Search(query);
+    try {
+      await state.search.getResults();
 
-    await state.search.getResults();
-
-    Spinner.removeLoader();
-    renderRecipes(state.search.result);
+      Spinner.removeLoader();
+      renderRecipes(state.search.result);
+    } catch (error) {
+      console.log(`Result error: ${error}`);
+      Spinner.removeLoader();
+    }
   }
 };
 
@@ -38,9 +42,22 @@ const resultPagesHandler = event => {
 
 resultPages.addEventListener('click', resultPagesHandler);
 
-const controlRecipes = async id => {
-  state.recipe = new Recipe(id);
-  await state.recipe.getRecipe();
+const controlRecipes = async () => {
+  const id = window.location.hash.replace('#', '');
+  if (id) {
+    state.recipe = new Recipe(id);
+    try {
+      await state.recipe.getRecipe();
+
+      state.recipe.calcTime();
+      state.recipe.calcSerivngs();
+      console.log(state.recipe);
+    } catch (error) {
+      console.log(`Recipe error: ${error}`);
+    }
+  }
 };
 
-controlRecipes(47746);
+['hashchange', 'load'].forEach(event =>
+  window.addEventListener(event, controlRecipes),
+);
