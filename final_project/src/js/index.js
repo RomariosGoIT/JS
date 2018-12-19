@@ -3,7 +3,7 @@ import { elements } from './store/domElements';
 import * as Spinner from './UI/Spinner';
 import * as searchView from './views/searchView';
 
-const { searchForm, searchResult } = elements;
+const { searchForm, searchResult, resultPages } = elements;
 const { getInput, renderRecipes, clearInput, clearResult } = searchView;
 
 const state = {};
@@ -25,3 +25,14 @@ const controlSearch = async event => {
 };
 
 searchForm.addEventListener('submit', controlSearch);
+
+const resultPagesHandler = event => {
+  const btn = event.target.closest('.btn-inline');
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto, 10);
+    clearResult();
+    renderRecipes(state.search.result, goToPage);
+  }
+};
+
+resultPages.addEventListener('click', resultPagesHandler);

@@ -1,12 +1,15 @@
 import { elements } from '../store/domElements';
 
-const { searchInput, resultList } = elements;
+const { searchInput, resultList, resultPages } = elements;
 
 export const getInput = () => searchInput.value;
 
 export const clearInput = () => (searchInput.value = '');
 
-export const clearResult = () => (resultList.innerHTML = '');
+export const clearResult = () => {
+  resultList.innerHTML = '';
+  resultPages.innerHTML = '';
+};
 
 const limitRecipeTitle = (title, limit = 17) => {
   const newTitle = [];
@@ -38,6 +41,41 @@ const renderRecipe = recipe => {
   resultList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderRecipes = recipes => {
-  recipes.forEach(renderRecipe);
+const createBbutton = (page, type) => {
+  console.log(page);
+  const btn = `
+    <button class="btn-inline results__btn--${type}" data-goto=${
+    type === 'prev' ? page - 1 : page + 1
+  }>
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <svg class="search__icon">
+            <use href="./img/icons.svg#icon-triangle-${
+              type === 'next' ? 'right' : 'left'
+            }"></use>
+        </svg>
+        
+    </button>
+    `;
+  return btn;
+};
+
+const renderButtons = (page, numResults, resPerPage) => {
+  const pages = Math.ceil(numResults / resPerPage);
+  let btn;
+  if (page === 1 && pages > 1) {
+    btn = createBbutton(page, 'next');
+  } else if (page < pages) {
+    btn = `${createBbutton(page, 'next')}
+        ${createBbutton(page, 'prev')}`;
+  } else if (page === pages && pages > 1) {
+    btn = createBbutton(page, 'prev');
+  }
+  resultPages.insertAdjacentHTML('afterbegin', btn);
+};
+
+export const renderRecipes = (recipes, page = 1, resPerPage = 10) => {
+  let start = (page - 1) * resPerPage;
+  let end = page * resPerPage;
+  renderButtons(page, recipes.length, resPerPage);
+  recipes.slice(start, end).forEach(renderRecipe);
 };
