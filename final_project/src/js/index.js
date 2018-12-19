@@ -1,4 +1,5 @@
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import { elements } from './store/domElements';
 import * as Spinner from './UI/Spinner';
 import * as searchView from './views/searchView';
@@ -36,3 +37,10 @@ const resultPagesHandler = event => {
 };
 
 resultPages.addEventListener('click', resultPagesHandler);
+
+const controlRecipes = async id => {
+  state.recipe = new Recipe(id);
+  await state.recipe.getRecipe();
+};
+
+controlRecipes(47746);
