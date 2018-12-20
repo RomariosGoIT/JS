@@ -54,11 +54,12 @@ export default class Recipe {
       'cup',
       'pound',
     ];
+    const unit = [...unitShort, 'kd', 'g'];
     const newIgredients = this.ingredients.map(el => {
       let ingredient = el.toLowerCase();
 
       unitLong.forEach((unit, i) => {
-        ingredient = ingredient.replace(unit, unitShort[i]);
+        ingredient = ingredient.replace(unit, unit[i]);
       });
       ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
 
