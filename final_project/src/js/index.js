@@ -51,6 +51,7 @@ const controlRecipes = async () => {
 
       state.recipe.calcTime();
       state.recipe.calcSerivngs();
+      state.recipe.parseIngredients();
       console.log(state.recipe);
     } catch (error) {
       console.log(`Recipe error: ${error}`);
