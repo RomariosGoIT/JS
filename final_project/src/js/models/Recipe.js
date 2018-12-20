@@ -59,12 +59,12 @@ export default class Recipe {
       let ingredient = el.toLowerCase();
 
       unitLong.forEach((unit, i) => {
-        ingredient = ingredient.replace(unit, unit[i]);
+        ingredient = ingredient.replace(unit, unitShort[i]);
       });
       ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
 
       const arrIng = ingredient.split(' ');
-      const unitIdx = arrIng.findIndex(el2 => unitShort.includes(el2));
+      const unitIdx = arrIng.findIndex(el2 => unit.includes(el2));
 
       let objIng;
       if (unitIdx > -1) {
