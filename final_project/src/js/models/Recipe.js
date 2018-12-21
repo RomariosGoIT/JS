@@ -9,7 +9,7 @@ export default class Recipe {
   async getRecipe() {
     try {
       const res = await axios(
-        `https://www.food2fork.com/api/get?key=${key}&rId=${this.id}`,
+        `https://www.food2fork.com/api/get?key=${key2}&rId=${this.id}`,
       );
       if (!res.data.error) {
         this.title = res.data.recipe.title;
@@ -102,5 +102,16 @@ export default class Recipe {
       return objIng;
     });
     this.ingredients = newIgredients;
+  }
+
+  updateServing(type) {
+    const newServing = type === 'dec' ? this.servings - 1 : this.servings + 1;
+
+    this.ingredients.forEach(ing => {
+      ing.count *= newServing / this.servings;
+    });
+
+    this.servings = newServing;
+    console.log(this.servings);
   }
 }

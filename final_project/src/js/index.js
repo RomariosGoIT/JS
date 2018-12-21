@@ -13,7 +13,7 @@ const {
   clearResult,
   highliteSelected,
 } = searchView;
-const { renderRecipe, clearRecipe } = recipeView;
+const { renderRecipe, clearRecipe, updateServingIngradients } = recipeView;
 
 const state = {};
 
@@ -74,6 +74,25 @@ const controlRecipes = async () => {
   }
 };
 
-['hashchange', 'load'].forEach(event =>
-  window.addEventListener(event, controlRecipes),
-);
+// ['hashchange', 'load'].forEach(event =>
+//   window.addEventListener(event, controlRecipes),
+// );
+
+window.addEventListener('hashchange', controlRecipes);
+
+const servingButtonHandler = evt => {
+  if (evt.target.matches('.btn-decrease, .btn-decrease *')) {
+    if (state.recipe.servings > 1) {
+      state.recipe.updateServing('dec');
+      updateServingIngradients(state.recipe);
+    }
+  } else if (evt.target.matches('.btn-increase, .btn-increase *')) {
+    if (state.recipe.servings < 100) {
+      state.recipe.updateServing('inc');
+      updateServingIngradients(state.recipe);
+    }
+  }
+  console.log(state.recipe);
+};
+
+viewRecipe.addEventListener('click', servingButtonHandler);
