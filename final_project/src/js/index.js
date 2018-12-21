@@ -6,7 +6,13 @@ import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 
 const { searchForm, searchResult, resultPages, viewRecipe } = elements;
-const { getInput, renderRecipes, clearInput, clearResult } = searchView;
+const {
+  getInput,
+  renderRecipes,
+  clearInput,
+  clearResult,
+  highliteSelected,
+} = searchView;
 const { renderRecipe, clearRecipe } = recipeView;
 
 const state = {};
@@ -50,7 +56,7 @@ const controlRecipes = async () => {
     clearRecipe();
 
     Spinner.renderLoader(viewRecipe);
-
+    if (state.search) highliteSelected(id);
     state.recipe = new Recipe(id);
     try {
       await state.recipe.getRecipe();
@@ -58,10 +64,9 @@ const controlRecipes = async () => {
       state.recipe.calcTime();
       state.recipe.calcSerivngs();
       state.recipe.parseIngredients();
+
       Spinner.removeLoader();
       renderRecipe(state.recipe);
-
-      console.log(state.recipe);
     } catch (error) {
       console.log(`Recipe error: ${error}`);
       Spinner.removeLoader();

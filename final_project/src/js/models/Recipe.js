@@ -65,22 +65,24 @@ export default class Recipe {
 
       const arrIng = ingredient.split(' ');
       const unitIdx = arrIng.findIndex(el2 => unit.includes(el2));
-
       let objIng;
+
       if (unitIdx > -1) {
-        const arrCount = arrIng.slice(0, unitIdx);
         let count;
+        const arrCount = arrIng.slice(0, unitIdx);
         if (arrCount.length === 1) {
           count = eval(arrCount[0].replace('-', '+'));
-          let num = count.toString();
-          if (num.length > 3) {
-            count = Number(count.toFixed(1));
+          if (count) {
+            let num = count.toString();
+            if (num.length > 3) {
+              count = Number(count.toFixed(1));
+            }
           }
         } else {
           count = eval(arrCount.join('+'));
         }
         objIng = {
-          count,
+          count: arrCount[0] === '' ? 1 : count,
           unit: arrIng[unitIdx],
           ingredient: arrIng.slice(unitIdx + 1).join(' '),
         };
@@ -99,7 +101,6 @@ export default class Recipe {
       }
       return objIng;
     });
-
     this.ingredients = newIgredients;
   }
 }
