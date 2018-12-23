@@ -1,5 +1,6 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
 import { elements } from './store/domElements';
 import * as Spinner from './UI/Spinner';
 import * as searchView from './views/searchView';
