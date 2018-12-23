@@ -5,8 +5,15 @@ import { elements } from './store/domElements';
 import * as Spinner from './UI/Spinner';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 
-const { searchForm, searchResult, resultPages, viewRecipe } = elements;
+const {
+  searchForm,
+  searchResult,
+  resultPages,
+  viewRecipe,
+  shoppintList,
+} = elements;
 const {
   getInput,
   renderRecipes,
@@ -15,8 +22,10 @@ const {
   highliteSelected,
 } = searchView;
 const { renderRecipe, clearRecipe, updateServingIngradients } = recipeView;
+const { renderItem, deleteItem } = listView;
 
 const state = {};
+window.state = state;
 
 const controlSearch = async event => {
   event.preventDefault();
@@ -81,6 +90,29 @@ const controlRecipes = async () => {
 
 window.addEventListener('hashchange', controlRecipes);
 
+const controlList = () => {
+  if (!state.list) state.list = new List();
+
+  state.recipe.ingredients.forEach(el => {
+    const { count, unit, ingredient } = el;
+    const item = state.list.addItem(count, unit, ingredient);
+    renderItem(item);
+  });
+};
+
+const deleteShoppingListHandler = evt => {
+  const id = evt.target.closest('.shopping__item').dataset.itemid;
+  if (evt.target.matches('.shopping__delete, .shopping__delete *')) {
+    state.list.deleteItem(id);
+    deleteItem(id);
+  } else if (evt.target.matches('.shopping__count-value')) {
+    const val = parseFloat(evt.target.value, 10);
+    if (val > -1) state.list.updateCount(id, val);
+  }
+};
+
+shoppintList.addEventListener('click', deleteShoppingListHandler);
+
 const servingButtonHandler = evt => {
   if (evt.target.matches('.btn-decrease, .btn-decrease *')) {
     if (state.recipe.servings > 1) {
@@ -92,8 +124,9 @@ const servingButtonHandler = evt => {
       state.recipe.updateServing('inc');
       updateServingIngradients(state.recipe);
     }
+  } else if (evt.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+    controlList();
   }
-  console.log(state.recipe);
 };
 
 viewRecipe.addEventListener('click', servingButtonHandler);

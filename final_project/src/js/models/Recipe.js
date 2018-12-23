@@ -9,7 +9,7 @@ export default class Recipe {
   async getRecipe() {
     try {
       const res = await axios(
-        `https://www.food2fork.com/api/get?key=${key2}&rId=${this.id}`,
+        `https://www.food2fork.com/api/get?key=${key}&rId=${this.id}`,
       );
       if (!res.data.error) {
         this.title = res.data.recipe.title;
