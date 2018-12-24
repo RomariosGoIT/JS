@@ -1,11 +1,13 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
+import Likes from './models/Likes';
 import { elements } from './store/domElements';
 import * as Spinner from './UI/Spinner';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likeView from './views/likeView';
 
 const {
   searchForm,
@@ -23,6 +25,7 @@ const {
 } = searchView;
 const { renderRecipe, clearRecipe, updateServingIngradients } = recipeView;
 const { renderItem, deleteItem } = listView;
+const { renderLike, toggleLikeBtn, toggleLikeMenu, deleteLike } = likeView;
 
 const state = {};
 window.state = state;
@@ -76,7 +79,7 @@ const controlRecipes = async () => {
       state.recipe.parseIngredients();
 
       Spinner.removeLoader();
-      renderRecipe(state.recipe);
+      renderRecipe(state.recipe, state.likes.isLiked(id));
     } catch (error) {
       console.log(`Recipe error: ${error}`);
       Spinner.removeLoader();
@@ -113,6 +116,35 @@ const deleteShoppingListHandler = evt => {
 
 shoppintList.addEventListener('click', deleteShoppingListHandler);
 
+// ************* JUST FOR TEST!!! ***** START *******
+
+state.likes = new Likes();
+toggleLikeMenu(state.likes.getNumLikes());
+
+// ************************************* END  *****
+
+const controlLikes = () => {
+  if (!state.likes) state.likes = new Likes();
+  const currentId = state.recipe.id;
+
+  if (!state.likes.isLiked(currentId)) {
+    const newLike = state.likes.addLike(
+      currentId,
+      state.recipe.title,
+      state.recipe.author,
+      state.recipe.image,
+    );
+    renderLike(newLike);
+    toggleLikeBtn(true);
+  } else {
+    deleteLike(currentId);
+    state.likes.deleteLike(currentId);
+    toggleLikeBtn(false);
+  }
+
+  toggleLikeMenu(state.likes.getNumLikes());
+};
+
 const servingButtonHandler = evt => {
   if (evt.target.matches('.btn-decrease, .btn-decrease *')) {
     if (state.recipe.servings > 1) {
@@ -126,6 +158,8 @@ const servingButtonHandler = evt => {
     }
   } else if (evt.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
     controlList();
+  } else if (evt.target.matches('.recipe__love, .recipe__love *')) {
+    controlLikes();
   }
 };
 
