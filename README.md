@@ -22,8 +22,8 @@ https://romariosgoit.github.io/JS/project_one
 
 
 </br>
-<strong>Recipe APP</strong>
 <p>*****************************</p>
+<strong>Recipe APP</strong>
 </br>
-<a target="_blank" rel="noopener noreferrer" href="https://romariosgoit.github.io/JS/final_project/dist/"><img src="/final_project/preview/preview.jpg"></a>
+<a rel="noopener noreferrer" href="https://romariosgoit.github.io/JS/final_project/dist/" target="_blank"><img src="/final_project/preview/preview.jpg"></a>
 
