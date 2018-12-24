@@ -21,9 +21,25 @@ https://romariosgoit.github.io/JS/project_one
 
 
 
-</br>
-<p>*****************************</p>
-<strong>Recipe APP</strong>
-</br>
-<a rel="noopener noreferrer" href="https://romariosgoit.github.io/JS/final_project/dist/" target="_blank"><img src="/final_project/preview/preview.jpg"></a>
 
+<div style="margin-top: 30px; margin-bottom: 30px; width: 50%">
+      <div style="text-align: center;">
+        <img
+          src="/final_project/preview/preview.jpg"
+          alt="recipe app"
+          style="padding: 0px; margin-top: 5px; width: 50%"
+        />
+        <div class="caption">
+          <h2>Recipe APP</h2>
+          <p style="font-size: 14px">
+            My Recipe APP. Used webpack and javascript
+          </p>
+          <a
+            href="https://romariosgoit.github.io/JS/final_project/dist/"
+            style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center;text-decoration: none;  display: inline-block; font-size: 16px;"
+          >
+            Open App
+          </a>
+        </div>
+      </div>
+    </div>
