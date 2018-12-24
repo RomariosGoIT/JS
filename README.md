@@ -20,8 +20,10 @@ https://romariosgoit.github.io/JS/project_one
 
 
 
-<strong>Recipe APP</strong>
+
 </br>
+<strong>Recipe APP</strong>
 <p>*****************************</p>
 </br>
-https://romariosgoit.github.io/JS/final_project/dist/
+<a href="https://romariosgoit.github.io/JS/final_project/dist/" target="_blank"><img src="/final_project/preview/preview.jpg"></a>
+
