@@ -1,5 +1,4 @@
 
-<div>
   <h2>My Pig-Game</h2>
   <img src="/pig-game/preview.png" alt="My Pig-Game"/>
   <div class="caption">    
@@ -12,8 +11,6 @@
 > <a href="https://romariosgoit.github.io/JS/pig-game/">
       Open App
     </a>
-  </div>
-</div>
 
 <hr>
 
