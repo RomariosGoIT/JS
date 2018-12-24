@@ -17,7 +17,7 @@ https://romariosgoit.github.io/JS/pig-game/
 <p>*****************************</p>
 </br>
 https://romariosgoit.github.io/JS/project_one
-
+</br>
 
 
 
@@ -25,5 +25,5 @@ https://romariosgoit.github.io/JS/project_one
 <strong>Recipe APP</strong>
 <p>*****************************</p>
 </br>
-<a href="https://romariosgoit.github.io/JS/final_project/dist/" target="_blank"><img src="/final_project/preview/preview.jpg"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://romariosgoit.github.io/JS/final_project/dist/"><img src="/final_project/preview/preview.jpg"></a>
 
