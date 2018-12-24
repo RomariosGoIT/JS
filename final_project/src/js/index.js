@@ -87,11 +87,9 @@ const controlRecipes = async () => {
   }
 };
 
-// ['hashchange', 'load'].forEach(event =>
-//   window.addEventListener(event, controlRecipes),
-// );
-
-window.addEventListener('hashchange', controlRecipes);
+['hashchange', 'load'].forEach(event =>
+  window.addEventListener(event, controlRecipes),
+);
 
 const controlList = () => {
   if (!state.list) state.list = new List();
@@ -116,13 +114,6 @@ const deleteShoppingListHandler = evt => {
 
 shoppintList.addEventListener('click', deleteShoppingListHandler);
 
-// ************* JUST FOR TEST!!! ***** START *******
-
-state.likes = new Likes();
-toggleLikeMenu(state.likes.getNumLikes());
-
-// ************************************* END  *****
-
 const controlLikes = () => {
   if (!state.likes) state.likes = new Likes();
   const currentId = state.recipe.id;
@@ -144,6 +135,13 @@ const controlLikes = () => {
 
   toggleLikeMenu(state.likes.getNumLikes());
 };
+
+window.addEventListener('load', () => {
+  state.likes = new Likes();
+  state.likes.readStorage();
+  toggleLikeMenu(state.likes.likes.length);
+  state.likes.likes.forEach(like => renderLike(like));
+});
 
 const servingButtonHandler = evt => {
   if (evt.target.matches('.btn-decrease, .btn-decrease *')) {
